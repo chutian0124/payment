@@ -2,10 +2,11 @@ package com.sunreal.payment.dao.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import com.sunreal.payment.dao.model.PayChannel;
 import com.sunreal.payment.dao.model.PayChannelExample;
-
+@Mapper
 public interface PayChannelMapper {
     int countByExample(PayChannelExample example);
 

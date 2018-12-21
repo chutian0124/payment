@@ -1,0 +1,1 @@
+需要安装延迟队列插件：https://www.rabbitmq.com/blog/2015/04/16/scheduling-messages-with-rabbitmq/

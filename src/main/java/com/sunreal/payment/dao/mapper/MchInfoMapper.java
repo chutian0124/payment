@@ -2,10 +2,11 @@ package com.sunreal.payment.dao.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import com.sunreal.payment.dao.model.MchInfo;
 import com.sunreal.payment.dao.model.MchInfoExample;
-
+@Mapper
 public interface MchInfoMapper {
     int countByExample(MchInfoExample example);
 

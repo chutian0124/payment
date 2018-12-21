@@ -2,10 +2,11 @@ package com.sunreal.payment.dao.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import com.sunreal.payment.dao.model.TransOrder;
 import com.sunreal.payment.dao.model.TransOrderExample;
-
+@Mapper
 public interface TransOrderMapper {
     int countByExample(TransOrderExample example);
 

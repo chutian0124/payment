@@ -27,7 +27,7 @@ public interface IPayOrderService {
 
     Map updateNotify(String jsonParam);
 
-    int createPayOrder(JSONObject payOrder);
+    Map createPayOrder(JSONObject payOrder);
 
     JSONObject queryPayOrder(String mchId, String payOrderId, String mchOrderNo, String executeNotify);
 

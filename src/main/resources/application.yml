@@ -4,7 +4,7 @@ server:
 spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
-    driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://192.168.123.105:3306/xxpaydb?useUnicode=true&characterEncoding=utf-8&autoReconnect=true&useSSL=false
     username: xxpay
     password: xxpay
@@ -35,19 +35,19 @@ spring:
       enabled: true # 如果此处设置为true，需要加activemq-pool依赖包，否则会自动配置失败，报JmsMessagingTemplate注入失败
 
   rabbitMQ:
-    addresses: localhost:5672
-    username: sunrealpay
-    password: SunReal_payment
+    addresses: 192.168.123.116:5672
+    username: root
+    password: root
     dynamic: true
 
 config:
   ali:
-    appid: 2016091900550792
-    private_key: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnT6OtlOI5QKdciqHQNw/4v1iLAxavc5mdJGL+e3A4ACKxvzRV/rE1B4jS3iEWc8PByicfVANBYpBA602i4PorQO2itHZb1ODhC9G4q+UAVDAD2/rCrB3SJfxrbZw/gaSu+WWalJ1s6kGieQHJhZmpzlSwdRlk83Tm5shKYUo6VWB6dpwAwKPubWmr0wBrbvQYNb3MgtLILJ3VB7wAMZNdJC/slD8iK6GxEq2lOI2NPqVH6YtmWttrAu6jApnh02XvVrCO6Z0RnmYJbrcyXoTUo3kRjumDr2WM8mOIFoH2gINV1fkluuliJ8/n0FDhrkRYexPMDx0fpjXnzoWlC5tLQIDAQAB
-    alipay_public_key: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0JA+RLuMjWDl/w+4z6XpgerJaM08MwOduVuMKvleDbvH+Bjgx389fFQzZQRk4Npi3Wl2bGCI8Kubj1N9UH9asUbVzUMKIY2LUyC6BeHYWvb/BA/533rMVu4dsccaQCjuzE5DRPS2OWOMBDIh+oIFza5negb2oZcmJDDy6i58B51sPDZNriwZEQUrYzP3FQaoDzIgy5NChgLotw5sfjwjM+JkuwCo8E6TDt+lHt9Ung2elPTKAMgQa/OuJ1yDFEN8AO2X7rqor8lSWFLIl2tKRATbi5/rC71/qchUEiqWcMMXmMY3H4g0tpzQAqDla6ZgnEaFcUJ87lKtpvdzO/JkQQIDAQAB
+    appid: 2016091900550981
+    private_key: MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC3CS50fnr+N43kKNkBR9qk8gVNWEjtVkLzkCLfy28pZv7w9lAIe7plEboGhcOW1tSKI1XyS+5wm3PruiBUY60OFg1F6MkKUAOhuBrtFsOWxHAYvUsGenBYib7U2kD9bptcjZ33nIUdVZ/GfRbqBkidvoocrJzbCzSY2QpULfLlf8PJLa2h2BuR4rVcgARwQp7AFYO2XFnyscfwDbMdVORu8cWhSKduxvTV9nORCBW6aJjTi6hyPBAbVE/uYr87JSS1YM9gBglrLlSwEnlU9ggbhQ1CJ+yWjcz0qdg8PAODZYOSTdjd4Qm8L5MZIeh1rZqZlgpsxBiLNPvNOdaVpi05AgMBAAECggEBAJJjTnsvOTEev2XuYXiLvkvToPf2FwVyy0M/URUKAFLtpBKV/PZ79lylK9HRo9d85CnDDxclMYNwYOr0Rq0Xty2f52e1QSz1R6JMu4RJg46Od1Th+CIrRLUbHbvg/r9yeeExBlkmHrSSaaH3I59x/Rvka1N5nk32DU/9riwbP7vZ834YeV2IsS5y8MpweyP2uYwoaBRcctoxQjTQr/Hsh4wKwN7q/+ys3EEcezBKnmgnHyM/7A4hhfzWKQkpy1TX3k4E4/2db2z02GhZyQJGfjGq7nllGfVJS1TtCMEgtkk+519g1JFQPpcuXD6v+SWzjwlKt8SVJjrtyLtMzZBiCXECgYEA5yGPd1LsR3Jpm7/71CwVv9mC3/ukM9YvA1mDAZ6sqkYApOLaHnFwzfkpjPjLSu2gk/yyn8k0bfuB9Th3jhTr1p1t26C9Xlt1eM6HBPzL52EDV7XAwzMER5O3bzLwLm3oA9bqK+eQBOpbxJXgu0Xu78IPbu5Sx+54REnI7ZjgS2UCgYEAyrraDMOcnqQxY/rNc7pqQaXfll4b/5Kc1lilZ9guKpityBCd/CJAaHxB+dvR1jhWGwzhWZbqsIaXmCknq1spX1XAX1OmohegzY4VlvPrvvA3a92HqKMgfYdkiyBkDjLkPiHd08LAR2/IwvxrEXdImvbkhz9z7IWlJJlvuVPUP0UCgYBZHeqIMpPh1G593B9IJptYNpCstgUQ65OC8h9+H2Up3gXfjYxWUp0Q/fIUZdVUlZzlknh4/YZWpbPtDhGi2dQ5EshJ94cse40mwFL1DFe+Zfx49B5X5TLQOldu67AJ5tyfplzyAr3X91jcyoE1E/jVvvheaEvIxNzgT6bGXbyVtQKBgF0G2vIKfP8LByMCvm5Bd2rCa9P7QUvIgjGVoekB+UVQpEXu4iAFs5p+kmPOK/7qAREOmwXaS71PNZb8I5jtDxIRLmJP52HwB7jrXxrSuTX30uarVAndORaBH3D8Hw2o6rVcIwd+EW92ayCWZacxHl8Fth4dztsVBI/D3NGlFvslAoGBALBpToV0isQIkCNbTurTayunDVVGksziTjGLoxLf0oZexxxN8SEZCTWsoRDJl/HhofRXoPnPUye7w+rTqgluqgydOXfXv97dPUMviQdFtvpBwPQcqq6wX+AH/0sActce4XChWzAWhRB0zYd8TfMQKnqEtAwXHMmeSFeWFp5tptEJ
+    alipay_public_key: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxwnkDKtltp5bOMvdHdeJiZFDR99x6NEr3i+PoqzIf/bfMyYHhgrwwLFkVKcx+37f0d0kLM820Cth8GG2jFo3CwHV3IiNcXcHPNI9EXG5218JLkuvHzu4uhWOv9JLB7hp5az7a3znig9lIh8KyOEqLWuuT8O1d5NtMCcGr6xf2iQGylup2ngwikZnychqEMIaE+Auvczk95xn1o5zur2yG5cAiEDIcSMFUbhNYL+7TAuI9+IPAp6LuodUzEkYeL5at6DG6MX/jOvyO0qGgdmHdQgsEA13OlBeotCc1CK+yV2am/yMdKxf83+u52SJRb95jt5mlO8G25IhQUoxcSpx5QIDAQAB
     isSandbox: 1
-    notify_url: http://api.xxpay.org/notify/pay/aliPayNotifyRes.htm
-    return_url: http://www.xxpay.org
+    notify_url: http://test.wezoz.com/notify/pay/aliPayNotifyRes.htm
+    return_url: http://test.wezoz.com/
   wx:
     certRootPath: /home/xxpay/service/cert
     notifyUrl: http://api.xxpay.org/notify/pay/wxPayNotifyRes.htm

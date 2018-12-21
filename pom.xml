@@ -160,12 +160,6 @@
     <build>
         <finalName>payment</finalName>
         <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <includes>
-                    <include>**/*.*</include>
-                </includes>
-            </resource>
             <resource> <!-- 配置需要被替换的资源文件路径 -->
                 <directory>src/main/resources</directory>
                 <includes>

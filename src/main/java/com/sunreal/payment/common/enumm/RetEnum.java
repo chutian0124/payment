@@ -39,6 +39,7 @@ public enum RetEnum {
     RET_BIZ_WX_PAY_CREATE_FAIL("1003", "微信支付下单失败"),
     RET_BIZ_ALI_PAY_CREATE_FAIL("1004", "支付宝支付下单失败"),
     RET_BIZ_PAY_NOTIFY_VERIFY_FAIL("1005", "支付通知数据验证不正确"),
+    RET_BIZ_ORDER_EXISTS("1006", "订单已存在"),
 
 
     // 未知错误

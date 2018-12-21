@@ -25,19 +25,19 @@ import static com.sunreal.payment.api.service.mq.MqConfig.PAY_NOTIFY_QUEUE_NAME;
 @Profile(MqConfig.Impl.RABBIT_MQ)
 public class RabbitMq4PayNotify extends Mq4PayNotify {
 
-	@Autowired
-	private AmqpAdmin amqpAdmin;
-
-	@PostConstruct
-	public void init() {
-		DirectExchange exchange = new DirectExchange(PAY_NOTIFY_EXCHANGE_NAME);
-		exchange.setDelayed(true);
-		Queue queue = new Queue(PAY_NOTIFY_QUEUE_NAME);
-		Binding binding = BindingBuilder.bind(queue).to(exchange).withQueueName();
-		amqpAdmin.declareExchange(exchange);
-		amqpAdmin.declareQueue(queue);
-		amqpAdmin.declareBinding(binding);
-	}
+//	@Autowired
+//	private AmqpAdmin amqpAdmin;
+//
+//	@PostConstruct
+//	public void init() {
+//		DirectExchange exchange = new DirectExchange(PAY_NOTIFY_EXCHANGE_NAME);
+//		exchange.setDelayed(true);
+//		Queue queue = new Queue(PAY_NOTIFY_QUEUE_NAME);
+//		Binding binding = BindingBuilder.bind(queue).to(exchange).withQueueName();
+////		amqpAdmin.declareExchange(exchange);
+//		amqpAdmin.declareQueue(queue);
+//		amqpAdmin.declareBinding(binding);
+//	}
 
 	@Autowired
 	private AmqpTemplate rabbitTemplate;
