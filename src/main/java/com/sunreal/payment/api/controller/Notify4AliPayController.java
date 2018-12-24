@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.sunreal.payment.api.service.INotifyPayService;
 import com.sunreal.payment.common.constant.PayConstant;
+import com.sunreal.payment.common.util.JsonUtil;
 import com.sunreal.payment.common.util.MyLog;
 
 /**
@@ -37,7 +38,7 @@ public class Notify4AliPayController {
 	@ResponseBody
 	public void aliPayReturnRes(HttpServletRequest request) throws ServletException, IOException {
 		_log.info("====== 开始接收支付宝支付同步回调 ======");
-		_log.info(request.getParameterMap().toString());
+		_log.info(JsonUtil.object2Json(request.getParameterMap()));
 		_log.info("====== 完成接收支付宝支付同步回调 ======");
 	}
 	/**
