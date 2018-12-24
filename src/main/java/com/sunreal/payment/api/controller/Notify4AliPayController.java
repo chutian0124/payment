@@ -9,6 +9,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,6 +33,13 @@ public class Notify4AliPayController {
 	@Autowired
 	private INotifyPayService notifyPayService;
 
+	@GetMapping(value = "/notify/pay/aliPayNotifyRes.htm")
+	@ResponseBody
+	public void aliPayReturnRes(HttpServletRequest request) throws ServletException, IOException {
+		_log.info("====== 开始接收支付宝支付同步回调 ======");
+		_log.info(request.getParameterMap().toString());
+		_log.info("====== 完成接收支付宝支付同步回调 ======");
+	}
 	/**
 	 * 支付宝移动支付后台通知响应
 	 * @param request
@@ -38,7 +47,7 @@ public class Notify4AliPayController {
 	 * @throws javax.servlet.ServletException
 	 * @throws java.io.IOException
      */
-	@RequestMapping(value = "/notify/pay/aliPayNotifyRes.htm")
+	@PostMapping(value = "/notify/pay/aliPayNotifyRes.htm")
 	@ResponseBody
 	public String aliPayNotifyRes(HttpServletRequest request) throws ServletException, IOException {
 		_log.info("====== 开始接收支付宝支付回调通知 ======");

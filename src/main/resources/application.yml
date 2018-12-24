@@ -47,7 +47,7 @@ config:
     alipay_public_key: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxwnkDKtltp5bOMvdHdeJiZFDR99x6NEr3i+PoqzIf/bfMyYHhgrwwLFkVKcx+37f0d0kLM820Cth8GG2jFo3CwHV3IiNcXcHPNI9EXG5218JLkuvHzu4uhWOv9JLB7hp5az7a3znig9lIh8KyOEqLWuuT8O1d5NtMCcGr6xf2iQGylup2ngwikZnychqEMIaE+Auvczk95xn1o5zur2yG5cAiEDIcSMFUbhNYL+7TAuI9+IPAp6LuodUzEkYeL5at6DG6MX/jOvyO0qGgdmHdQgsEA13OlBeotCc1CK+yV2am/yMdKxf83+u52SJRb95jt5mlO8G25IhQUoxcSpx5QIDAQAB
     isSandbox: 1
     notify_url: http://test.wezoz.com/notify/pay/aliPayNotifyRes.htm
-    return_url: http://test.wezoz.com/
+    return_url: http://test.wezoz.com/notify/pay/aliPayNotifyRes.htm
   wx:
     certRootPath: /home/xxpay/service/cert
     notifyUrl: http://api.xxpay.org/notify/pay/wxPayNotifyRes.htm

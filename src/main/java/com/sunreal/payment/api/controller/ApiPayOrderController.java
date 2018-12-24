@@ -1,6 +1,10 @@
 package com.sunreal.payment.api.controller;
 
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -9,6 +13,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,6 +24,7 @@ import com.sunreal.payment.api.service.IMchInfoService;
 import com.sunreal.payment.api.service.IPayChannelService;
 import com.sunreal.payment.api.service.IPayOrderService;
 import com.sunreal.payment.common.constant.PayConstant;
+import com.sunreal.payment.common.util.JsonUtil;
 import com.sunreal.payment.common.util.MyLog;
 import com.sunreal.payment.common.util.MySeq;
 import com.sunreal.payment.common.util.RpcUtil;
@@ -30,6 +37,7 @@ import com.sunreal.payment.common.util.XXPayUtil;
  * @date 2017-07-05
  * @Copyright: www.xxpay.org
  */
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 public class ApiPayOrderController {
 
@@ -45,7 +53,7 @@ public class ApiPayOrderController {
     private IMchInfoService mchInfoService;
 
     @RequestMapping(value = "/api/pay/create_order", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public String payOrder(@RequestBody JSONObject params) {
+    public String craetePayOrder(@RequestBody JSONObject params) {
         _log.info("###### 开始接收商户统一下单请求 ######");
         String logPrefix = "【商户统一下单】";
         try {
@@ -67,32 +75,64 @@ public class ApiPayOrderController {
                 String rpcRetMsg = result.get("rpcRetMsg") == null ? "支付中心下单失败！" : result.get("rpcRetMsg").toString();
                 String resCode = result.get("rpcRetCode") == null ? "" : result.get("rpcRetCode").toString();
                 return XXPayUtil.makeRetFail(XXPayUtil.makeRetMap(PayConstant.RETURN_VALUE_FAIL, rpcRetMsg, resCode, null));
-            }
-            String channelId = payOrder.getString("channelId");
-            switch (channelId) {
-                case PayConstant.PAY_CHANNEL_WX_APP:
-                    return payOrderService.doWxPayReq(PayConstant.WxConstant.TRADE_TYPE_APP, payOrder, payContext.getString("resKey"));
-                case PayConstant.PAY_CHANNEL_WX_JSAPI:
-                    return payOrderService.doWxPayReq(PayConstant.WxConstant.TRADE_TYPE_JSPAI, payOrder, payContext.getString("resKey"));
-                case PayConstant.PAY_CHANNEL_WX_NATIVE:
-                    return payOrderService.doWxPayReq(PayConstant.WxConstant.TRADE_TYPE_NATIVE, payOrder, payContext.getString("resKey"));
-                case PayConstant.PAY_CHANNEL_WX_MWEB:
-                    return payOrderService.doWxPayReq(PayConstant.WxConstant.TRADE_TYPE_MWEB, payOrder, payContext.getString("resKey"));
-                case PayConstant.PAY_CHANNEL_ALIPAY_MOBILE:
-                    return payOrderService.doAliPayReq(channelId, payOrder, payContext.getString("resKey"));
-                case PayConstant.PAY_CHANNEL_ALIPAY_PC:
-                    return payOrderService.doAliPayReq(channelId, payOrder, payContext.getString("resKey"));
-                case PayConstant.PAY_CHANNEL_ALIPAY_WAP:
-                    return payOrderService.doAliPayReq(channelId, payOrder, payContext.getString("resKey"));
-                case PayConstant.PAY_CHANNEL_ALIPAY_QR:
-                    return payOrderService.doAliPayReq(channelId, payOrder, payContext.getString("resKey"));
-                default:
-                    return XXPayUtil.makeRetFail(XXPayUtil.makeRetMap(PayConstant.RETURN_VALUE_FAIL, "不支持的支付渠道类型[channelId=" + channelId + "]", null, null));
+            } else {
+                String jsonParam = RpcUtil.createBaseParam(JsonUtil.getObjectFromJson(payOrder.toJSONString(),Map.class));
+                Map createdOrder = payOrderService.selectPayOrderByMchIdAndMchOrderNo(jsonParam);
+                Map<String, Object> retMap = XXPayUtil.makeRetMap(PayConstant.RETURN_VALUE_SUCCESS, "", PayConstant.RETURN_VALUE_SUCCESS, null);
+                Map bizResult = JsonUtil.getObjectFromJson(createdOrder.get("bizResult").toString(),Map.class);
+                retMap.put("result", bizResult.get("payOrderId"));
+                return XXPayUtil.makeRetData(retMap, payContext.getString("resKey"));
             }
         } catch (Exception e) {
             _log.error(e, "");
             return XXPayUtil.makeRetFail(XXPayUtil.makeRetMap(PayConstant.RETURN_VALUE_FAIL, "支付中心系统异常", null, null));
         }
+    }
+
+    @RequestMapping(value = "/api/pay/{id}")
+    public void payOrder(@PathVariable(value = "id") String orderid, HttpServletResponse httpResponse) throws IOException {
+        Map<String, Object> p = new HashMap<String, Object>();
+        p.put("payOrderId",orderid);
+        String jsonParam = RpcUtil.createBaseParam(p);
+        Map order = JsonUtil.getObjectFromJson(payOrderService.selectPayOrder(jsonParam).get("bizResult").toString(),Map.class);
+        String channelId = order.get("channelId").toString();
+        JSONObject mchInfo = mchInfoService.getByMchId(order.get("mchId").toString());
+        JSONObject payOrder = JsonUtil.getJSONObjectFromObj(order);
+        String resKey = (String) mchInfo.get("resKey");
+        String result = "";
+        switch (channelId) {
+            case PayConstant.PAY_CHANNEL_WX_APP:
+                result = payOrderService.doWxPayReq(PayConstant.WxConstant.TRADE_TYPE_APP, payOrder, resKey);
+                break;
+            case PayConstant.PAY_CHANNEL_WX_JSAPI:
+                result = payOrderService.doWxPayReq(PayConstant.WxConstant.TRADE_TYPE_JSPAI, payOrder, resKey);
+                break;
+            case PayConstant.PAY_CHANNEL_WX_NATIVE:
+                result = payOrderService.doWxPayReq(PayConstant.WxConstant.TRADE_TYPE_NATIVE, payOrder, resKey);
+                break;
+            case PayConstant.PAY_CHANNEL_WX_MWEB:
+                result = payOrderService.doWxPayReq(PayConstant.WxConstant.TRADE_TYPE_MWEB, payOrder, resKey);
+                break;
+            case PayConstant.PAY_CHANNEL_ALIPAY_MOBILE:
+                result = payOrderService.doAliPayReq(channelId, payOrder, resKey);
+                break;
+            case PayConstant.PAY_CHANNEL_ALIPAY_PC:
+                result = payOrderService.doAliPayReq(channelId, payOrder, resKey);
+                break;
+            case PayConstant.PAY_CHANNEL_ALIPAY_WAP:
+                result = payOrderService.doAliPayReq(channelId, payOrder, resKey);
+                break;
+            case PayConstant.PAY_CHANNEL_ALIPAY_QR:
+                result = payOrderService.doAliPayReq(channelId, payOrder, resKey);
+                break;
+            default:
+                result = XXPayUtil.makeRetFail(XXPayUtil.makeRetMap(PayConstant.RETURN_VALUE_FAIL, "不支持的支付渠道类型[channelId=" + channelId + "]", null, null));
+        }
+        Map resultmap = JsonUtil.getObjectFromJson(result, Map.class);
+        httpResponse.setContentType("text/html;charset=UTF-8");
+        httpResponse.getWriter().write(resultmap.get("payUrl").toString());//直接将完整的表单html输出到页面
+        httpResponse.getWriter().flush();
+        httpResponse.getWriter().close();
     }
 
     /**
@@ -108,7 +148,7 @@ public class ApiPayOrderController {
     @RequestMapping(value = "/api/pay/create_order")
     public String payOrder(@RequestParam String params) {
         JSONObject po = JSONObject.parseObject(params);
-        return payOrder(po);
+        return craetePayOrder(po);
     }
 
     /**

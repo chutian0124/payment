@@ -3,6 +3,7 @@ package com.sunreal.payment.common.util;
 import java.text.DateFormat;
 import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 
 import org.apache.commons.beanutils.Converter;
@@ -33,6 +34,9 @@ public class DateTimeConverter implements Converter {
                     if (length <= 10) {
                         formatter = new SimpleDateFormat(DATE, new DateFormatSymbols(Locale.CHINA));
                         return formatter.parse(dateValue);
+                    }
+                    if (length == 13){
+                        return new Date(Long.valueOf(dateValue));
                     }
                     if (length <= 19) {
                         formatter = new SimpleDateFormat(DATETIME, new DateFormatSymbols(Locale.CHINA));

@@ -40,13 +40,10 @@
         </dependency>
         <!--ali_pay-->
         <dependency>
-            <groupId>com.alipay</groupId>
-            <artifactId>sdk</artifactId>
-            <version>1.5</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/src/main/webapp/WEB-INF/lib/alipay-sdk-java20170818173712.jar</systemPath>
+            <groupId>com.alipay.sdk</groupId>
+            <artifactId>alipay-sdk-java</artifactId>
+            <version>3.4.49.ALL</version>
         </dependency>
-
         <!--druid数据库连接池-->
         <dependency>
             <groupId>com.alibaba</groupId>

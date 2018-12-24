@@ -38,10 +38,6 @@ public class PayOrderServiceImpl extends BaseService implements IPayOrderService
         paramMap.put("payOrder", payOrder);
         String jsonParam = RpcUtil.createBaseParam(paramMap);
         return createPayOrder(jsonParam);
-//        Map<String, Object> result = createPayOrder(jsonParam);
-//        String s = RpcUtil.mkRet(result);
-//        if(s == null) return 0;
-//        return Integer.parseInt(s);
     }
 
     public JSONObject queryPayOrder(String mchId, String payOrderId, String mchOrderNo, String executeNotify) {
