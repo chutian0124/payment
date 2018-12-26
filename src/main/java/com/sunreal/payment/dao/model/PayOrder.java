@@ -131,7 +131,7 @@ public class PayOrder implements Serializable {
     private String param2;
 
     /**
-     * 通知地址
+     * 异步通知地址
      *
      * @mbggenerated
      */
@@ -143,6 +143,13 @@ public class PayOrder implements Serializable {
      * @mbggenerated
      */
     private Byte notifyCount;
+
+    /**
+     * 同步通知地址
+     *
+     * @mbggenerated
+     */
+    private String returnUrl;
 
     /**
      * 最后一次通知时间
@@ -381,6 +388,14 @@ public class PayOrder implements Serializable {
         this.updateTime = updateTime;
     }
 
+    public String getReturnUrl() {
+        return returnUrl;
+    }
+
+    public void setReturnUrl(String returnUrl) {
+        this.returnUrl = returnUrl;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -412,6 +427,7 @@ public class PayOrder implements Serializable {
         sb.append(", paySuccTime=").append(paySuccTime);
         sb.append(", createTime=").append(createTime);
         sb.append(", updateTime=").append(updateTime);
+        sb.append(", returnUrl=").append(returnUrl);
         sb.append("]");
         return sb.toString();
     }
@@ -452,7 +468,9 @@ public class PayOrder implements Serializable {
             && (this.getExpireTime() == null ? other.getExpireTime() == null : this.getExpireTime().equals(other.getExpireTime()))
             && (this.getPaySuccTime() == null ? other.getPaySuccTime() == null : this.getPaySuccTime().equals(other.getPaySuccTime()))
             && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
-            && (this.getUpdateTime() == null ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()));
+            && (this.getUpdateTime() == null ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()))
+            && (this.getReturnUrl() == null ? other.getReturnUrl() == null : this.getReturnUrl().equals(other.getReturnUrl()));
+
     }
 
     @Override
@@ -484,6 +502,7 @@ public class PayOrder implements Serializable {
         result = prime * result + ((getPaySuccTime() == null) ? 0 : getPaySuccTime().hashCode());
         result = prime * result + ((getCreateTime() == null) ? 0 : getCreateTime().hashCode());
         result = prime * result + ((getUpdateTime() == null) ? 0 : getUpdateTime().hashCode());
+        result = prime * result + ((getReturnUrl() == null) ? 0 : getReturnUrl().hashCode());
         return result;
     }
 }

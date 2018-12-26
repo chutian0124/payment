@@ -93,7 +93,7 @@ public abstract class Mq4PayNotify extends BaseService {
                 msgObj.put("count", cnt);
                 this.send(msgObj.toJSONString(), cnt * 60 * 1000);
             }
-            _log.warn("notify failed. url:{}, response body:{}", respUrl, notifyResult.toString());
+            //_log.warn("notify failed. url:{}, response body:{}", respUrl, notifyResult.toString());
         } catch(Exception e) {
             _log.info("<==MQ通知业务系统结束[orderId：{}][count：{}][time：{}]", orderId, count, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
             _log.error(e, "notify exception. url:%s", respUrl);

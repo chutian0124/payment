@@ -175,6 +175,7 @@ public class ApiPayOrderController {
         String sign = params.getString("sign");                // 签名
         String subject = params.getString("subject");            // 商品主题
         String body = params.getString("body");                    // 商品描述信息
+        String returnUrl = params.getString("returnUrl");                    // 支付结果同步回调地址
         // 验证请求参数有效性（必选项）
         if (StringUtils.isBlank(mchId)) {
             errorMessage = "request params[mchId] error.";
@@ -206,6 +207,10 @@ public class ApiPayOrderController {
         }
         if (StringUtils.isBlank(body)) {
             errorMessage = "request params[body] error.";
+            return errorMessage;
+        }
+        if (StringUtils.isBlank(returnUrl)) {
+            errorMessage = "request params[returnUrl] error.";
             return errorMessage;
         }
         // 根据不同渠道,判断extra参数
@@ -306,6 +311,7 @@ public class ApiPayOrderController {
         payOrder.put("param1", param1);
         payOrder.put("param2", param2);
         payOrder.put("notifyUrl", notifyUrl);
+        payOrder.put("returnUrl", returnUrl);
         return payOrder;
     }
 
