@@ -59,7 +59,7 @@ public class ApiPayOrderController {
         try {
             JSONObject payContext = new JSONObject();
             JSONObject payOrder = null;
-            // 验证参数有效性
+            // 验证参数有效性,如果通过了返回是jsonobject，没通过返回的是String，错误信息
             Object object = validateParams(params, payContext);
             if (object instanceof String) {
                 _log.info("{}参数校验不通过:{}", logPrefix, object);
