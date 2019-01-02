@@ -35,7 +35,7 @@ spring:
       enabled: true # 如果此处设置为true，需要加activemq-pool依赖包，否则会自动配置失败，报JmsMessagingTemplate注入失败
 
   rabbitMQ:
-    addresses: 192.168.123.116:5672
+    addresses: 192.168.100.94:5672
     username: root
     password: root
     dynamic: true
@@ -46,11 +46,11 @@ config:
     private_key: MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC3CS50fnr+N43kKNkBR9qk8gVNWEjtVkLzkCLfy28pZv7w9lAIe7plEboGhcOW1tSKI1XyS+5wm3PruiBUY60OFg1F6MkKUAOhuBrtFsOWxHAYvUsGenBYib7U2kD9bptcjZ33nIUdVZ/GfRbqBkidvoocrJzbCzSY2QpULfLlf8PJLa2h2BuR4rVcgARwQp7AFYO2XFnyscfwDbMdVORu8cWhSKduxvTV9nORCBW6aJjTi6hyPBAbVE/uYr87JSS1YM9gBglrLlSwEnlU9ggbhQ1CJ+yWjcz0qdg8PAODZYOSTdjd4Qm8L5MZIeh1rZqZlgpsxBiLNPvNOdaVpi05AgMBAAECggEBAJJjTnsvOTEev2XuYXiLvkvToPf2FwVyy0M/URUKAFLtpBKV/PZ79lylK9HRo9d85CnDDxclMYNwYOr0Rq0Xty2f52e1QSz1R6JMu4RJg46Od1Th+CIrRLUbHbvg/r9yeeExBlkmHrSSaaH3I59x/Rvka1N5nk32DU/9riwbP7vZ834YeV2IsS5y8MpweyP2uYwoaBRcctoxQjTQr/Hsh4wKwN7q/+ys3EEcezBKnmgnHyM/7A4hhfzWKQkpy1TX3k4E4/2db2z02GhZyQJGfjGq7nllGfVJS1TtCMEgtkk+519g1JFQPpcuXD6v+SWzjwlKt8SVJjrtyLtMzZBiCXECgYEA5yGPd1LsR3Jpm7/71CwVv9mC3/ukM9YvA1mDAZ6sqkYApOLaHnFwzfkpjPjLSu2gk/yyn8k0bfuB9Th3jhTr1p1t26C9Xlt1eM6HBPzL52EDV7XAwzMER5O3bzLwLm3oA9bqK+eQBOpbxJXgu0Xu78IPbu5Sx+54REnI7ZjgS2UCgYEAyrraDMOcnqQxY/rNc7pqQaXfll4b/5Kc1lilZ9guKpityBCd/CJAaHxB+dvR1jhWGwzhWZbqsIaXmCknq1spX1XAX1OmohegzY4VlvPrvvA3a92HqKMgfYdkiyBkDjLkPiHd08LAR2/IwvxrEXdImvbkhz9z7IWlJJlvuVPUP0UCgYBZHeqIMpPh1G593B9IJptYNpCstgUQ65OC8h9+H2Up3gXfjYxWUp0Q/fIUZdVUlZzlknh4/YZWpbPtDhGi2dQ5EshJ94cse40mwFL1DFe+Zfx49B5X5TLQOldu67AJ5tyfplzyAr3X91jcyoE1E/jVvvheaEvIxNzgT6bGXbyVtQKBgF0G2vIKfP8LByMCvm5Bd2rCa9P7QUvIgjGVoekB+UVQpEXu4iAFs5p+kmPOK/7qAREOmwXaS71PNZb8I5jtDxIRLmJP52HwB7jrXxrSuTX30uarVAndORaBH3D8Hw2o6rVcIwd+EW92ayCWZacxHl8Fth4dztsVBI/D3NGlFvslAoGBALBpToV0isQIkCNbTurTayunDVVGksziTjGLoxLf0oZexxxN8SEZCTWsoRDJl/HhofRXoPnPUye7w+rTqgluqgydOXfXv97dPUMviQdFtvpBwPQcqq6wX+AH/0sActce4XChWzAWhRB0zYd8TfMQKnqEtAwXHMmeSFeWFp5tptEJ
     alipay_public_key: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxwnkDKtltp5bOMvdHdeJiZFDR99x6NEr3i+PoqzIf/bfMyYHhgrwwLFkVKcx+37f0d0kLM820Cth8GG2jFo3CwHV3IiNcXcHPNI9EXG5218JLkuvHzu4uhWOv9JLB7hp5az7a3znig9lIh8KyOEqLWuuT8O1d5NtMCcGr6xf2iQGylup2ngwikZnychqEMIaE+Auvczk95xn1o5zur2yG5cAiEDIcSMFUbhNYL+7TAuI9+IPAp6LuodUzEkYeL5at6DG6MX/jOvyO0qGgdmHdQgsEA13OlBeotCc1CK+yV2am/yMdKxf83+u52SJRb95jt5mlO8G25IhQUoxcSpx5QIDAQAB
     isSandbox: 1
-    notify_url: http://test.wezoz.com/notify/pay/aliPayNotifyRes.htm
-    return_url: http://test.wezoz.com/notify/pay/aliPayNotifyRes.htm
+    notify_url: http://payment.srzyjk.top/notify/pay/aliPayNotifyRes.htm
+    return_url: http://payment.srzyjk.top/notify/pay/aliPayNotifyRes.htm
   wx:
-    certRootPath: /home/xxpay/service/cert
-    notifyUrl: http://api.xxpay.org/notify/pay/wxPayNotifyRes.htm
+    certRootPath: /ESP/payment/service/cert
+    notifyUrl: http://payment.srzyjk.top/notify/pay/wxPayNotifyRes.htm
 
 logging:
-  file: ./log/xxpay4spring-boot.log
+  file: ./paymentlog/xxpay4spring-boot.log
