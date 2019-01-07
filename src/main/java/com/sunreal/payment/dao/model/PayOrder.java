@@ -186,6 +186,11 @@ public class PayOrder implements Serializable {
      */
     private Date updateTime;
 
+    /**
+     * 原始订单编号
+     */
+    private String originalOrderId;
+
     private static final long serialVersionUID = 1L;
 
     public String getPayOrderId() {
@@ -396,6 +401,14 @@ public class PayOrder implements Serializable {
         this.returnUrl = returnUrl;
     }
 
+    public String getOriginalOrderId() {
+        return originalOrderId;
+    }
+
+    public void setOriginalOrderId(String originalOrderId) {
+        this.originalOrderId = originalOrderId;
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -428,6 +441,7 @@ public class PayOrder implements Serializable {
         sb.append(", createTime=").append(createTime);
         sb.append(", updateTime=").append(updateTime);
         sb.append(", returnUrl=").append(returnUrl);
+        sb.append(", originalOrderId=").append(originalOrderId);
         sb.append("]");
         return sb.toString();
     }
@@ -469,7 +483,8 @@ public class PayOrder implements Serializable {
             && (this.getPaySuccTime() == null ? other.getPaySuccTime() == null : this.getPaySuccTime().equals(other.getPaySuccTime()))
             && (this.getCreateTime() == null ? other.getCreateTime() == null : this.getCreateTime().equals(other.getCreateTime()))
             && (this.getUpdateTime() == null ? other.getUpdateTime() == null : this.getUpdateTime().equals(other.getUpdateTime()))
-            && (this.getReturnUrl() == null ? other.getReturnUrl() == null : this.getReturnUrl().equals(other.getReturnUrl()));
+            && (this.getReturnUrl() == null ? other.getReturnUrl() == null : this.getReturnUrl().equals(other.getReturnUrl()))
+            && (this.getOriginalOrderId() == null ? other.getOriginalOrderId() == null : this.getOriginalOrderId().equals(other.getOriginalOrderId()));
 
     }
 
@@ -503,6 +518,7 @@ public class PayOrder implements Serializable {
         result = prime * result + ((getCreateTime() == null) ? 0 : getCreateTime().hashCode());
         result = prime * result + ((getUpdateTime() == null) ? 0 : getUpdateTime().hashCode());
         result = prime * result + ((getReturnUrl() == null) ? 0 : getReturnUrl().hashCode());
+        result = prime * result + ((getOriginalOrderId() == null) ? 0 : getOriginalOrderId().hashCode());
         return result;
     }
 }

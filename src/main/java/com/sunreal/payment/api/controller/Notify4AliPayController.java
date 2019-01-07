@@ -46,8 +46,7 @@ public class Notify4AliPayController {
 		_log.info(JsonUtil.object2Json(request.getParameterMap()));
         String payOrderId=request.getParameter("out_trade_no");
         PayOrder order=payOrderService.selectPayOrder(payOrderId);
-        //ModelAndView mv = new ModelAndView("redirect:http://centee.wezoz.com/index.jsp");
-        ModelAndView mv = new ModelAndView("redirect:"+order.getReturnUrl());
+        ModelAndView mv = new ModelAndView("redirect:"+order.getReturnUrl()+"?originalOrderId="+order.getOriginalOrderId());
         _log.info("url:"+order.getReturnUrl());
         _log.info("====== 完成接收支付宝支付同步回调 ======");
         return mv;
