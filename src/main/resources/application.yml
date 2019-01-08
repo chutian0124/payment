@@ -49,11 +49,11 @@ config:
     notify_url: http://payment.srzyjk.top/notify/pay/aliPayNotifyRes.htm
     return_url: http://payment.srzyjk.top/notify/pay/aliPayNotifyRes.htm
   wx:
-#    certRootPath: /ESP/payment/cert
-#    logoFilePath: /ESP/payment/paylogo.jpg
-    logoFilePath: F:/常用文档/桌面文件/企业服务平台/支付.jpg
-    certRootPath: D:/chromeDownLoad/cert
+    certRootPath: /ESP/payment/cert
+    logoFilePath: /ESP/payment/paylogo.jpg
+#    logoFilePath: F:/常用文档/桌面文件/企业服务平台/支付.jpg
+#    certRootPath: D:/chromeDownLoad/cert
     notifyUrl: http://payment.srzyjk.top/notify/pay/wxPayNotifyRes.htm
 
 logging:
-  file: ./paymentlog/xxpay4spring-boot.log
+  file: ./log/xxpay4spring-boot.log
