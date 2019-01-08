@@ -32,6 +32,7 @@ public class PayConstant {
 	public final static byte PAY_STATUS_PAYING = 1; 	// 支付中
 	public final static byte PAY_STATUS_SUCCESS = 2; 	// 支付成功
 	public final static byte PAY_STATUS_COMPLETE = 3; 	// 业务完成
+	public final static byte PAY_STATUS_REFUND = 4; 	// 退款完成
 
 	public final static byte TRANS_STATUS_INIT = 0; 		// 初始态
 	public final static byte TRANS_STATUS_TRANING = 1; 		// 转账中
@@ -105,5 +106,7 @@ public class PayConstant {
 
 	public static final String NOTIFY_BUSI_PAY = "NOTIFY_VV_PAY_RES";
 	public static final String NOTIFY_BUSI_TRANS = "NOTIFY_VV_TRANS_RES";
+
+    public static final String CURRENCY = "cny";
 
 }
