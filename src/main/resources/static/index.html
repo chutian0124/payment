@@ -4,14 +4,15 @@
 
 	<head>
 		<meta charset="utf-8">
-		<title>XXPAY - 运营管理</title>
+		<title>晟融支付运营管理</title>
 		<meta name="renderer" content="webkit">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
 		<meta name="apple-mobile-web-app-capable" content="yes">
 		<meta name="format-detection" content="telephone=no">
-		<link rel="icon" type="image/x-icon" href="images/favicon.ico">
+		<link rel="shortcut icon" type="image/x-icon" href="favicon.ico">
+		<link rel="bookmark" href="favicon.ico"/>
 		<link rel="stylesheet" href="plugins/layui/css/layui.css" media="all" />
 		<link rel="stylesheet" href="css/global.css" media="all">
 		<link rel="stylesheet" href="plugins/font-awesome/css/font-awesome.min.css">
@@ -24,7 +25,7 @@
 				<div class="layui-main">
 					<div class="admin-login-box">
 						<a class="logo" style="left: 0;" href="#">
-							<span style="font-size: 22px;">XxPay运营平台</span>
+							<span style="font-size: 22px;">晟融支付运营平台</span>
 						</a>
 						<div class="admin-side-toggle">
 							<i class="fa fa-bars" aria-hidden="true"></i>
@@ -35,13 +36,7 @@
 					</div>
 					<ul class="layui-nav admin-header-item">
 						<li class="layui-nav-item">
-							<a href="javascript:;">清除缓存</a>
-						</li>
-                        <li class="layui-nav-item" id="pay">
-                            <a href="javascript:;">捐赠我&支付流程体验</a>
-                        </li>
-						<li class="layui-nav-item">
-							<a href="http://www.xxpay.org" target="_blank">浏览网站</a>
+							<a href="javascript:clear();">清除缓存</a>
 						</li>
 						<li class="layui-nav-item">
 							<a href="javascript:;" class="admin-header-user">
@@ -49,17 +44,6 @@
 								<span>jmdhappy</span>
 							</a>
 							<dl class="layui-nav-child">
-								<dd>
-									<a href="javascript:;"><i class="fa fa-user-circle" aria-hidden="true"></i> 个人信息</a>
-								</dd>
-								<dd>
-									<a href="javascript:;"><i class="fa fa-gear" aria-hidden="true"></i> 设置</a>
-								</dd>
-								<dd id="lock">
-									<a href="javascript:;">
-										<i class="fa fa-lock" aria-hidden="true" style="padding-right: 3px;padding-left: 1px;"></i> 锁屏 (Alt+L)
-									</a>
-								</dd>
 								<dd>
 									<a href="login.html"><i class="fa fa-sign-out" aria-hidden="true"></i> 注销</a>
 								</dd>
@@ -93,28 +77,13 @@
 			</div>
 			<div class="layui-footer footer footer-demo" id="admin-footer">
 				<div class="layui-main">
-					<p>2017 &copy;
-						<a href="http://mgr.xxpay.org/">xxpay</a> <script src="https://s13.cnzz.com/z_stat.php?id=1262480096&web_id=1262480096" language="JavaScript"></script>
-					</p>
+					<p>2018 &copy; www.sunreal.cn</p>
 				</div>
 			</div>
 			<div class="site-tree-mobile layui-hide">
 				<i class="layui-icon">&#xe602;</i>
 			</div>
 			<div class="site-mobile-shade"></div>
-
-			<!--锁屏模板 start-->
-			<script type="text/template" id="lock-temp">
-				<div class="admin-header-lock" id="lock-box">
-					<div class="admin-header-lock-img">
-						<img src="images/0.jpg"/>
-					</div>
-					<div class="admin-header-lock-name" id="lockUserName">beginner</div>
-					<input type="text" class="admin-header-lock-input" value="输入密码解锁.." name="lockPwd" id="lockPwd" />
-					<button class="layui-btn layui-btn-small" id="unlock">解锁</button>
-				</div>
-			</script>
-			<!--锁屏模板 end -->
 
 			<script type="text/javascript" src="plugins/layui/layui.js"></script>
 			<script type="text/javascript" src="datas/nav.js"></script>
@@ -123,17 +92,10 @@
 				layui.use('layer', function() {
 					var $ = layui.jquery,
 						layer = layui.layer;
-
-					$('#pay').on('click', function() {
-						layer.open({
-							title: '捐赠我&支付流程体验',
-							maxmin: true,
-							type: 2,
-							content: 'http://shop.xxpay.org/goods/openQrPay.html',
-							area: ['800px', '600px']
-						});
-                    });
 				});
+				function clear(){
+					alert("清理成功！");
+				}
 			</script>
 		</div>
 	</body>

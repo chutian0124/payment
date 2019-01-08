@@ -10,26 +10,36 @@ import org.springframework.stereotype.Component;
  * 这里放置各种配置数据
  */
 @Component
-@ConfigurationProperties(prefix="config.wx")
+@ConfigurationProperties(prefix = "config.wx")
 public class WxPayProperties {
 
-	private String certRootPath;
+    private String certRootPath;
 
-	private String notifyUrl;
+    private String notifyUrl;
 
-	public String getCertRootPath() {
-		return certRootPath;
-	}
+    private String logoFilePath;
 
-	public void setCertRootPath(String certRootPath) {
-		this.certRootPath = certRootPath;
-	}
+    public String getCertRootPath() {
+        return certRootPath;
+    }
 
-	public String getNotifyUrl() {
-		return notifyUrl;
-	}
+    public void setCertRootPath(String certRootPath) {
+        this.certRootPath = certRootPath;
+    }
 
-	public void setNotifyUrl(String notifyUrl) {
-		this.notifyUrl = notifyUrl;
-	}
+    public String getNotifyUrl() {
+        return notifyUrl;
+    }
+
+    public void setNotifyUrl(String notifyUrl) {
+        this.notifyUrl = notifyUrl;
+    }
+
+    public String getLogoFilePath() {
+        return logoFilePath;
+    }
+
+    public void setLogoFilePath(String logoFilePath) {
+        this.logoFilePath = logoFilePath;
+    }
 }

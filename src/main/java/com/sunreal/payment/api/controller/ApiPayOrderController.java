@@ -1,13 +1,13 @@
 package com.sunreal.payment.api.controller;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Resource;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
-
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -20,10 +20,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.github.binarywang.utils.qrcode.QrcodeUtils;
 import com.sunreal.payment.api.service.IMchInfoService;
 import com.sunreal.payment.api.service.IPayChannelService;
 import com.sunreal.payment.api.service.IPayOrderService;
+import com.sunreal.payment.api.service.channel.wechat.WxPayProperties;
 import com.sunreal.payment.common.constant.PayConstant;
+import com.sunreal.payment.common.util.AmountUtil;
 import com.sunreal.payment.common.util.JsonUtil;
 import com.sunreal.payment.common.util.MyLog;
 import com.sunreal.payment.common.util.MySeq;
@@ -52,6 +57,9 @@ public class ApiPayOrderController {
     @Autowired
     private IMchInfoService mchInfoService;
 
+    @Resource
+    private WxPayProperties wxPayProperties;
+
     @RequestMapping(value = "/api/pay/create_order", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public String craetePayOrder(@RequestBody JSONObject params) {
         _log.info("###### 开始接收商户统一下单请求 ######");
@@ -76,10 +84,10 @@ public class ApiPayOrderController {
                 String resCode = result.get("rpcRetCode") == null ? "" : result.get("rpcRetCode").toString();
                 return XXPayUtil.makeRetFail(XXPayUtil.makeRetMap(PayConstant.RETURN_VALUE_FAIL, rpcRetMsg, resCode, null));
             } else {
-                String jsonParam = RpcUtil.createBaseParam(JsonUtil.getObjectFromJson(payOrder.toJSONString(),Map.class));
+                String jsonParam = RpcUtil.createBaseParam(JsonUtil.getObjectFromJson(payOrder.toJSONString(), Map.class));
                 Map createdOrder = payOrderService.selectPayOrderByMchIdAndMchOrderNo(jsonParam);
                 Map<String, Object> retMap = XXPayUtil.makeRetMap(PayConstant.RETURN_VALUE_SUCCESS, "", PayConstant.RETURN_VALUE_SUCCESS, null);
-                Map bizResult = JsonUtil.getObjectFromJson(createdOrder.get("bizResult").toString(),Map.class);
+                Map bizResult = JsonUtil.getObjectFromJson(createdOrder.get("bizResult").toString(), Map.class);
                 retMap.put("result", bizResult.get("payOrderId"));
                 return XXPayUtil.makeRetData(retMap, payContext.getString("resKey"));
             }
@@ -92,11 +100,12 @@ public class ApiPayOrderController {
     @RequestMapping(value = "/api/pay/{id}")
     public void payOrder(@PathVariable(value = "id") String orderid, HttpServletResponse httpResponse) throws IOException {
         Map<String, Object> p = new HashMap<String, Object>();
-        p.put("payOrderId",orderid);
+        p.put("payOrderId", orderid);
         String jsonParam = RpcUtil.createBaseParam(p);
-        Map order = JsonUtil.getObjectFromJson(payOrderService.selectPayOrder(jsonParam).get("bizResult").toString(),Map.class);
+        Map order = JsonUtil.getObjectFromJson(payOrderService.selectPayOrder(jsonParam).get("bizResult").toString(), Map.class);
         String channelId = order.get("channelId").toString();
-        JSONObject mchInfo = mchInfoService.getByMchId(order.get("mchId").toString());
+        String mchId = order.get("mchId").toString();
+        JSONObject mchInfo = mchInfoService.getByMchId(mchId);
         JSONObject payOrder = JsonUtil.getJSONObjectFromObj(order);
         String resKey = (String) mchInfo.get("resKey");
         String result = "";
@@ -129,10 +138,100 @@ public class ApiPayOrderController {
                 result = XXPayUtil.makeRetFail(XXPayUtil.makeRetMap(PayConstant.RETURN_VALUE_FAIL, "不支持的支付渠道类型[channelId=" + channelId + "]", null, null));
         }
         Map resultmap = JsonUtil.getObjectFromJson(result, Map.class);
-        httpResponse.setContentType("text/html;charset=UTF-8");
-        httpResponse.getWriter().write(resultmap.get("payUrl").toString());//直接将完整的表单html输出到页面
-        httpResponse.getWriter().flush();
-        httpResponse.getWriter().close();
+        if (resultmap.get("payUrl") != null) {
+            httpResponse.setContentType("text/html;charset=UTF-8");
+            httpResponse.getWriter().write(resultmap.get("payUrl").toString());//直接将完整的表单html输出到页面、
+            httpResponse.getWriter().flush();
+            httpResponse.getWriter().close();
+        } else if (resultmap.get("codeUrl") != null)  {
+            Object subject = order.get("subject");
+            Object body = order.get("body");
+            Object returnUrl = order.get("returnUrl");
+            String amount = AmountUtil.convertCent2Dollar(order.get("amount").toString());
+            System.out.println(amount);
+            String codeUrl = resultmap.get("codeUrl").toString();
+            String prepayId = resultmap.get("prepayId").toString();
+            System.out.println("微信返回的prepayId："+prepayId);
+            httpResponse.setContentType("text/html;charset=UTF-8");
+            StringBuffer url = new StringBuffer("<!DOCTYPE html>");
+            url.append("<html>\n");
+            url.append("<head>\n");
+            url.append("    <meta charset=\"utf-8\">\n");
+            url.append("    <meta value=\"viewport\" content=\"width=device-width, initial-scale=1.0, maximum-scale=1.0\" />\n");
+            url.append("    <title>").append(subject).append("</title>\n");
+            url.append("    <link rel=\"stylesheet\" href=\"/css/wxpay.css\">\n");
+            url.append("</head>\n");
+            url.append("<body>\n");
+            url.append("    <div class=\"main\">\n");
+            url.append("        <div class=\"header\">\n");
+            url.append("            <div class=\"logo wd\">\n");
+            url.append("                <img src=\"/images/logo.png\" alt=\"\">\n");
+            url.append("            </div>\n");
+            url.append("            <h3 class=\" title\">").append(subject).append("</h3>\n");
+            url.append("        </div>\n");
+            url.append("        <div class=\"content wd\">\n");
+            url.append("            <div class=\"code-box\">\n");
+            url.append("                <div class=\"code-title\">\n");
+            url.append("                    <h4>订单总计：<span>¥<b>").append(amount).append("元</b></span></h4>\n");
+            url.append("                    <p>").append(body).append("</p>\n");
+            url.append("                </div>\n");
+            url.append("                <div class=\"code-img\">\n");
+            url.append("                    <img src=\"/api/createQrcode?qrvalue=").append(codeUrl).append("\" alt=\"\">\n");
+            url.append("                </div>\n");
+            url.append("                <div class='code-foot'>\n");
+            url.append("                    <img src=\"/images/wei.png\" alt=\"\">\n");
+            url.append("                    <span>请扫码完成微信支付</span>\n");
+            url.append("                </div>\n");
+            url.append("            </div>\n");
+            url.append("        </div>\n");
+            url.append("    </div>\n");
+            url.append("</body>\n");
+            url.append("<script src=\"/js/jquery-1.12.4.min.js\"></script>\n");
+            url.append("<script>\n");
+            url.append("    var orderid ='").append(orderid).append("';\n");
+            url.append("    var mchId ='").append(mchId).append("';\n");
+            url.append("    var returnUrl='").append(returnUrl).append("';\n");
+            url.append("    var id = 0;\n");
+            url.append("    var url = '/api/pay/isOrderFinish';\n");
+            url.append("    $(function(){\n");
+            url.append("        id= setInterval(load,1000);\n");
+            url.append("    });\n");
+            url.append("    function load() {\n");
+            url.append("       $.ajax({\n");
+            url.append("           url: url,\n");
+            url.append("           type: 'post',\n");
+            url.append("           contentType:'application/json',\n");
+            url.append("           data: JSON.stringify({\n");
+            url.append("                 \"payOrderId\":\"").append(orderid).append("\"").append(",\n");
+            url.append("                 \"mchId\":\"").append(mchId).append("\"\n");
+            url.append("           }),\n");
+            url.append("           success: function (data) {\n");
+            url.append("                 if(data == 'Y'){\n");
+            url.append("                        clearInterval(id);\n");
+            url.append("                        window.location = \"").append(returnUrl).append("\";\n");
+            url.append("                 }\n");
+            url.append("           },\n");
+            url.append("           error: function (err) {\n");
+            url.append("                 console.log(err);\n");
+            url.append("           }\n");
+            url.append("     });\n");
+            url.append("  }\n");
+            url.append("</script>\n");
+            url.append("</html>\n");
+            httpResponse.getWriter().write(url.toString());//直接将完整的表单html输出到页面、
+            httpResponse.getWriter().flush();
+            httpResponse.getWriter().close();
+        }
+    }
+
+    @RequestMapping(value = "/api/createQrcode")
+    public void createQrcode(String qrvalue, HttpServletResponse httpResponse) throws IOException {
+        File logofile = new File(wxPayProperties.getLogoFilePath());
+        byte[] buf = QrcodeUtils.createQrcode(qrvalue, logofile);
+        ServletOutputStream out = httpResponse.getOutputStream();
+        out.write(buf);
+        out.flush();
+        out.close();
     }
 
     /**
