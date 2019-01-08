@@ -1,6 +1,7 @@
 package com.sunreal.payment.common.constant;
 
 import java.io.File;
+import java.math.BigDecimal;
 
 /**
  * @Description: 支付常量类
@@ -106,7 +107,9 @@ public class PayConstant {
 
 	public static final String NOTIFY_BUSI_PAY = "NOTIFY_VV_PAY_RES";
 	public static final String NOTIFY_BUSI_TRANS = "NOTIFY_VV_TRANS_RES";
-
+    /**币种-人民币*/
     public static final String CURRENCY = "cny";
+    /**元与分转换*/
+    public static final BigDecimal YUAN_FEN_TRANSITION = new BigDecimal("100");
 
 }

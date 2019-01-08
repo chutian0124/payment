@@ -1,5 +1,6 @@
 package com.sunreal.payment.api.service.impl;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import com.alibaba.fastjson.JSON;
@@ -76,7 +77,7 @@ public class RefundOrderApiServiceImpl extends BaseService implements RefundOrde
             AlipayTradeRefundModel alipayTradeRefundModel=new AlipayTradeRefundModel();
             alipayTradeRefundModel.setTrade_no(order.getChannelOrderNo());
             alipayTradeRefundModel.setOut_trade_no(order.getPayOrderId());
-            alipayTradeRefundModel.setRefund_amount(Double.valueOf(order.getAmount())/100);
+            alipayTradeRefundModel.setRefund_amount(new BigDecimal(order.getAmount()).divide(PayConstant.YUAN_FEN_TRANSITION));
             alipayTradeRefundModel.setRefund_currency(PayConstant.CURRENCY);
             alipayTradeRefundModel.setRefund_reason(refundReason);
             alipayTradeRefundModel.setTerminal_id(terminalId);

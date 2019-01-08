@@ -1,5 +1,7 @@
 package com.sunreal.payment.dao.model;
 
+import java.math.BigDecimal;
+
 import com.alipay.api.AlipayObject;
 
 /**
@@ -14,7 +16,7 @@ public class AlipayTradeRefundModel extends AlipayObject {
     /**支付宝交易号，和商户订单号不能同时为空*/
     private String trade_no;
     /**需要退款的金额，该金额不能大于订单金额,单位为元，支持两位小数*/
-    private Double refund_amount;
+    private BigDecimal refund_amount;
     /**订单退款币种信息*/
     private String refund_currency;
     /**退款的原因说明*/
@@ -50,11 +52,11 @@ public class AlipayTradeRefundModel extends AlipayObject {
         this.trade_no = trade_no;
     }
 
-    public Double getRefund_amount() {
+    public BigDecimal getRefund_amount() {
         return refund_amount;
     }
 
-    public void setRefund_amount(Double refund_amount) {
+    public void setRefund_amount(BigDecimal refund_amount) {
         this.refund_amount = refund_amount;
     }
 
